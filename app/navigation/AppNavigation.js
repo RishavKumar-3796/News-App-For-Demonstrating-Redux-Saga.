@@ -1,13 +1,13 @@
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 
 import { createStackNavigator } from 'react-navigation-stack';
-import RestaurantList from '../modules/Screens/RestaurantList';
+import NewsList from '../modules/Screens/NewsList';
 
 
 
 const AuthStack = createStackNavigator(
   {
-    RestaurantList,
+    NewsList,
   },
   {
     // Default config for all screens

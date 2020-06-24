@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-import styles from '../modules/Screens/ScreenStyles.js/InitialScreenStyle';
+import styles from '../modules/Screens/ScreenStyles/InitialScreenStyle';
 import Global from '../configs/Global';
 
-export const RestaurantListingComponent = (props) => {
+export const NewsListViewCompoennt = (props) => {
     //using default useState hooks
     const [expanded, setExpanded] = useState(false)
     //Accessing the item passed from the props

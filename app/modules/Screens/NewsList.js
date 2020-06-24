@@ -4,13 +4,13 @@ import { Container, Spinner } from 'native-base';
 import CustomHeader from '../../components/CustomHeader';
 import { SafeAreaView } from 'react-navigation';
 import { ApplicationStyles, Icons } from '../../theme';
-import styles from './ScreenStyles.js/InitialScreenStyle';
+import styles from './ScreenStyles/InitialScreenStyle';
 import { connect } from 'react-redux';
 import { getRestaurantListingRequest } from '../../redux/actions/Auth';
-import { RestaurantListingComponent } from '../../components/RestaurantListingComponent';
+import { NewsListViewCompoennt } from '../../components/NewsListViewCompoennt';
 import { GridViewListing } from '../../components/GridViewListing';
 
-class RestaurantList extends Component {
+class NewsList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -41,6 +41,7 @@ class RestaurantList extends Component {
     }
 
     handleResponse = () => {
+        console.log('restaurantData');
         const { auth: { restaurantData, error } } = this.props;
         if (restaurantData && error === null) {
 
@@ -79,7 +80,7 @@ class RestaurantList extends Component {
                     updateCellsBatchingPeriod={1}
                     renderItem={({ item }) =>
                         isComfortableView ?
-                            <RestaurantListingComponent
+                            <NewsListViewCompoennt
                                 item={item}
                                 props={this.props} />
                             :
@@ -138,4 +139,4 @@ const mapDispatchToProps = dispatch => ({
     getListOfRestaurant: (data) => dispatch(getRestaurantListingRequest(data)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RestaurantList);
+export default connect(mapStateToProps, mapDispatchToProps)(NewsList);

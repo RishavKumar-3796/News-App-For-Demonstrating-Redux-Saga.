@@ -1,6 +1,6 @@
 
 import Reduxer, { immutableMerge } from '../Reduxer';
-import { GET_RESTAURANT_LIST_FAILURE, GET_RESTAURANT_LIST_REQUEST, GET_RESTAURANT_LIST_SUCCESS } from '../types/Auth';
+import { GET_NEWS_LIST_FAILURE, GET_NEWS_LIST_REQUEST, GET_NEWS_LIST_SUCCESS } from '../types/Auth';
 
 export const INITIAL_STATE = Object.freeze({
     fetching: false,
@@ -38,7 +38,7 @@ const failure = (state, action) => {
 
 
 export default Reduxer(INITIAL_STATE, {
-    [GET_RESTAURANT_LIST_REQUEST]: request,
-    [GET_RESTAURANT_LIST_SUCCESS]: success,
-    [GET_RESTAURANT_LIST_FAILURE]: failure,
+    [GET_NEWS_LIST_REQUEST]: request,
+    [GET_NEWS_LIST_SUCCESS]: success,
+    [GET_NEWS_LIST_FAILURE]: failure,
 });
