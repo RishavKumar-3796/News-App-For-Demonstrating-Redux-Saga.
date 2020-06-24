@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-navigation';
 import { ApplicationStyles, Icons } from '../../theme';
 import styles from './ScreenStyles/InitialScreenStyle';
 import { connect } from 'react-redux';
-import { getRestaurantListingRequest } from '../../redux/actions/Auth';
+import { getNewsListingRequest } from '../../redux/actions/Auth';
 import { NewsListViewCompoennt } from '../../components/NewsListViewCompoennt';
 import { GridViewListing } from '../../components/GridViewListing';
 
@@ -27,10 +27,10 @@ class NewsList extends Component {
     }
 
     getListOfNews = () => {
-        const { getListOfRestaurant } = this.props;
+        const { getNewsList } = this.props;
         const { count } = this.state;
         let postData = { count, offset: 100 }
-        getListOfRestaurant(postData);
+        getNewsList(postData);
     }
 
     componentDidUpdate(prevProps) {
@@ -41,11 +41,9 @@ class NewsList extends Component {
     }
 
     handleResponse = () => {
-        console.log('restaurantData');
-        const { auth: { restaurantData, error } } = this.props;
-        if (restaurantData && error === null) {
-
-            this.setState({ isLoading: false, newsDataList: restaurantData })
+        const { auth: { newsData, error } } = this.props;
+        if (newsData && error === null) {
+            this.setState({ isLoading: false, newsDataList: newsData })
         } else {
             this.setState({ isLoading: false });
         };
@@ -136,7 +134,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    getListOfRestaurant: (data) => dispatch(getRestaurantListingRequest(data)),
+    getNewsList: (data) => dispatch(getNewsListingRequest(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewsList);

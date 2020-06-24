@@ -5,7 +5,7 @@ import { GET_NEWS_LIST_FAILURE, GET_NEWS_LIST_REQUEST, GET_NEWS_LIST_SUCCESS } f
 export const INITIAL_STATE = Object.freeze({
     fetching: false,
     error: null,
-    restaurantData: null
+    newsData: null
 });
 
 const request = (state) =>
@@ -17,13 +17,13 @@ const request = (state) =>
 const success = (state, action) => {
     const { data } = action.payload;
     let newData = [];
-    if (state?.restaurantData) newData = [...state?.restaurantData, ...data]
+    if (state?.newsData) newData = [...state?.newsData, ...data]
     else newData = data;
     console.log('newData', newData);
 
     return immutableMerge(state, {
         fetching: false,
-        restaurantData: data,
+        newsData: data,
         error: null
     });
 }

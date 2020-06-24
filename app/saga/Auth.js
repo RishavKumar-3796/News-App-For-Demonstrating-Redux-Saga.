@@ -1,18 +1,18 @@
 import { call, put } from 'redux-saga/effects';
 import API from '../services/Api';
-import { getRestaurantListingSuccess, getRestaurantListingFailure } from '../redux/actions/Auth';
+import { getNewsListingSuccess, getNewsListingFailure } from '../redux/actions/Auth';
 import { getError } from '../services/Utils';
 
 
-export function* getRestaurantDetailListing(action) {
+export function* getNewsDetailListing(action) {
     const api = API.auth();
-    const response = yield call(api.getRestaurantList, action.payload);
+    const response = yield call(api.getNewsList, action.payload);
     if (response.status === 200) {
-        yield put(getRestaurantListingSuccess(response.data));
+        yield put(getNewsListingSuccess(response.data));
         console.log('res', response.data);
 
     } else {
         const error = getError(response);
-        yield put(getRestaurantListingFailure(error));
+        yield put(getNewsListingFailure(error));
     }
 }
