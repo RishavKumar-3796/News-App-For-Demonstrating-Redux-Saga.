@@ -9,8 +9,6 @@ export function* getNewsDetailListing(action) {
     const response = yield call(api.getNewsList, action.payload);
     if (response.status === 200) {
         yield put(getNewsListingSuccess(response.data));
-        console.log('res', response.data);
-
     } else {
         const error = getError(response);
         yield put(getNewsListingFailure(error));

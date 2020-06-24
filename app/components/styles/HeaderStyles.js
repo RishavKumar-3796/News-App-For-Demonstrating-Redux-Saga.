@@ -62,6 +62,11 @@ const styles = StyleSheet.create({
         height: scale(23),
         borderRadius: 10,
         backgroundColor: 'white'
+    },
+    absView: {
+        position: "absolute",
+        left: 10,
+        alignSelf: "center"
     }
 })
 

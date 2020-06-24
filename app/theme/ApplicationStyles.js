@@ -1,4 +1,5 @@
 import { Colors } from './';
+import Global from '../configs/Global';
 
 // This file is for a reusable grouping of Theme items.
 // Similar to an XML fragment layout in Android
@@ -11,7 +12,8 @@ const ApplicationStyles = {
         },
         safeAreaViewContainer: {
             flex: 1,
-            backgroundColor: Colors.primaryOrange
+            backgroundColor: Colors.primaryOrange,
+            marginBottom: Global.statusBarHeightFunc()
         },
     }
 };
