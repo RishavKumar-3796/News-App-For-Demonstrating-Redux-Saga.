@@ -1,0 +1,66 @@
+{
+  "name": "ProfessionalStructuring",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint .",
+    "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean --force",
+    "clean:android": "cd android/ && ./gradlew clean && cd .. && react-native run-android",
+    "newclear": "rm -rf $TMPDIR/react-* && watchman watch-del-all && rm -rf ios/build && rm -rf node_modules/ && npm cache clean --force && npm i",
+    "android:build": "cd android && ./gradlew assembleRelease && open './app/build/outputs/apk/'",
+    "android:install": "cd android && ./gradlew assembleRelease && ./gradlew installRelease",
+    "android:devices": "$ANDROID_HOME/platform-tools/adb devices",
+    "android:logcat": "$ANDROID_HOME/platform-tools/adb logcat *:S ReactNative:V ReactNativeJS:V",
+    "android:shake": "$ANDROID_HOME/platform-tools/adb devices | grep '\\t' | awk '{print $1}' | sed 's/\\s//g' | xargs -I {} $ANDROID_HOME/platform-tools/adb -s {} shell input keyevent 82",
+    "git-hook": "npm run lint -s && npm run test -s",
+    "fixcode": "eslint --fix ./app"
+  },
+  "lint-staged": {
+    "app/**/*.js": [
+      "npm run fixcode"
+    ]
+  },
+  "dependencies": {
+    "@mapbox/polyline": "^1.1.0",
+    "@dooboo-ui/native-switch-toggle": "^0.7.0",
+    "@react-native-community/async-storage": "^1.6.2",
+    "apisauce": "^1.1.1",
+    "moment": "^2.27.0",
+    "native-base": "^2.13.8",
+    "react": "16.9.0",
+    "react-native": "0.61.4",
+    "react-native-config": "^0.11.7",
+    "react-native-gesture-handler": "^1.5.0",
+    "react-native-splash-screen": "^3.2.0",
+    "react-native-status-bar-height": "^2.4.0",
+    "react-navigation": "^4.0.10",
+    "react-navigation-redux-helpers": "^4.0.1",
+    "react-navigation-stack": "^1.10.3",
+    "react-redux": "^7.1.3",
+    "redux": "^4.0.4",
+    "redux-persist": "^6.0.0",
+    "redux-saga": "^1.1.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.2",
+    "@babel/runtime": "^7.7.2",
+    "@react-native-community/eslint-config": "^0.0.5",
+    "babel-jest": "^24.9.0",
+    "eslint": "^6.6.0",
+    "husky": "^3.0.9",
+    "jest": "^24.9.0",
+    "lint-staged": "^9.4.2",
+    "metro-react-native-babel-preset": "^0.57.0",
+    "react-test-renderer": "16.9.0",
+    "reactotron-react-native": "^4.0.2",
+    "reactotron-redux": "^3.1.2",
+    "reactotron-redux-saga": "^4.2.2"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
