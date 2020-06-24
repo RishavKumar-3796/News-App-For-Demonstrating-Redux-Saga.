@@ -53,8 +53,6 @@ class NewsList extends Component {
         const { auth } = this.props;
         const { count } = this.state;
         if (!auth?.fetching) {
-            console.log('called');
-
             this.setState({ count: count + 10 }, () => this.getListOfNews())
         }
     }
