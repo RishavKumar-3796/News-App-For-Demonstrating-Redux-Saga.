@@ -108,7 +108,7 @@ class NewsList extends Component {
         const { scrollPosition, isComfortableView } = this.state;
         this.setState({ isComfortableView: value }, () =>
             setTimeout(() => {
-                let newScrollPosition = !isComfortableView ? scrollPosition * 2.8 : scrollPosition / 2
+                let newScrollPosition = !isComfortableView ? scrollPosition * 2.5 : scrollPosition / 1.5
                 this.flatListRef.scrollToOffset({ offset: newScrollPosition, animated: true })
             }, 500))
     }

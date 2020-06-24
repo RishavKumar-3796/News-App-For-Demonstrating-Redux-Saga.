@@ -19,8 +19,6 @@ const success = (state, action) => {
     let newData = [];
     if (state?.newsData) newData = [...state?.newsData, ...data]
     else newData = data;
-    console.log('newData', newData);
-
     return immutableMerge(state, {
         fetching: false,
         newsData: data,
