@@ -16,6 +16,7 @@ const statusBarHeightFunc = () => {
 }
 
 const transformDateFromNow = (date) => {
+    // Transform date 
     let formattedDate = moment(date).fromNow()
     return formattedDate;
 }
