@@ -1,5 +1,5 @@
 
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { Fonts, scale, verticalScale, Colors, moderateScale } from '../../../theme';
 import Global from '../../../configs/Global';
 
@@ -127,6 +127,10 @@ const styles = StyleSheet.create({
         color: '#A9A9A9',
         fontSize: scale(12),
         textAlign: 'right',
+    },
+    flatListWrapper: {
+        flex: 1,
+        height: Dimensions.get('window').height
     }
 });
 

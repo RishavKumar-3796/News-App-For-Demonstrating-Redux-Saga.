@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList, Dimensions } from 'react-native';
-import { Container, Spinner } from 'native-base';
+import { Container, Spinner, Toast } from 'native-base';
 import CustomHeader from '../../components/CustomHeader';
 import { SafeAreaView } from 'react-navigation';
 import { ApplicationStyles, Icons } from '../../theme';
@@ -14,57 +14,66 @@ class NewsList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            newsDataList: [],
-            isLoading: false,
+            newsDataList: [], //data List
+            isLoading: false, //main loader
             isComfortableView: true,
-            scrollPosition: 0,
-            count: 10
+            scrollPosition: 0, //default scroll position
+            offset: 0, //which will fetch the data acc to value provided
+            isBottomLoader: false //for bottom activity indicator
         };
     }
 
     componentDidMount() {
+        //get data while initial render.
         this.setState({ isLoading: true }, () => this.getListOfNews())
     }
 
     getListOfNews = () => {
-        const { getNewsList } = this.props;
-        const { count } = this.state;
-        let postData = { count, offset: 100 }
-        getNewsList(postData);
+        const { getNewsList } = this.props; //for calling Saga to get the data
+        const { offset } = this.state; //dynamic offset value
+        let postData = { count: 20, offset: offset } //keeping count constant and offset as per data loading
+        getNewsList(postData); //calling the mapDispatchToProps
     }
 
-    componentDidUpdate(prevProps) {
-        const { auth } = this.props;
-        if (prevProps?.auth?.fetching && !auth?.fetching) {
+    componentDidUpdate(prevProps) { //when there would be change in props or state value
+        const { auth } = this.props; //reading the reducer value
+        if (prevProps?.auth?.fetching && !auth?.fetching) { //For checking the API has given response
             this.handleResponse(); //for initial api call
         }
     }
 
-    handleResponse = () => {
-        const { auth: { newsData, error } } = this.props;
+    handleResponse = () => { //handling the API response
+        const { auth: { newsData, error } } = this.props; //Reading the value from reducer
+        const { newsDataList } = this.state;
         if (newsData && error === null) {
-            this.setState({ isLoading: false, newsDataList: newsData })
+            //concatenating the value to state from reducer
+            this.setState({ isLoading: false, isBottomLoader: false, newsDataList: newsDataList.concat(newsData) })
         } else {
-            this.setState({ isLoading: false });
+            //if any error occurs
+            this.setState({ isLoading: false, isBottomLoader: false }, () => Toast.show(error));
         };
     }
 
-    onEndReached = () => {
+    onEndReached = () => { //on flatlist end reached
         const { auth } = this.props;
-        const { count } = this.state;
-        if (!auth?.fetching) {
-            this.setState({ count: count + 10 }, () => this.getListOfNews())
-        }
+        const { offset } = this.state;
+        if (!auth?.fetching) this.setState({ offset: offset + 10 }, () => this.getListOfNews())
     }
 
-    handleScroll = (event) => {
+    handleScroll = (event) => { //for scroll behaviour
         this.setState({ scrollPosition: event.nativeEvent.contentOffset.y });
     }
 
+    renderBottomSpinner = () => ( //for bottom flatlist spinner
+        <Spinner />
+    )
+
     renderFlatlist = () => {
-        const { newsDataList, isComfortableView } = this.state;
+        const { newsDataList, isComfortableView } = this.state; //destructuring the state
         return (
-            <View style={{ flex: 1, height: Dimensions.get('window').height }}>
+
+            <View style={styles.flatListWrapper}>
+                {/* wrapping the flatlist in view so it gets proper bottom height */}
                 <FlatList
                     ref={ref => this.flatListRef = ref}
                     showsVerticalScrollIndicator={false}
@@ -72,30 +81,38 @@ class NewsList extends Component {
                     data={newsDataList}
                     removeClippedSubviews={false}
                     onScroll={this.handleScroll}
-                    numColumns={isComfortableView ? 1 : 2}
+                    numColumns={isComfortableView ? 1 : 2} //changing num columns to support grid or list layout 
                     updateCellsBatchingPeriod={1}
+                    ListFooterComponent={() => this.renderBottomSpinner()} //render spinner when flatlist fetches new set of data
                     renderItem={({ item }) =>
                         isComfortableView ?
                             <NewsListViewCompoennt
                                 item={item}
                                 props={this.props} />
+                            //List View of data
                             :
                             <GridViewListing
                                 item={item}
                                 props={this.props}
                             />
+                        //Grid View of data
                     }
-                    onEndReached={() => this.onEndReached()}
-                    onEndReachedThreshold={0.5}
-                    extraData={newsDataList}
-                    key={(isComfortableView ? 'comfort' : 'compact')}
-                    keyExtractor={(item) => item._id}
+                    onEndReached={({ distanceFromEnd }) => {
+                        if (distanceFromEnd >= 0) {
+                            // Called once when the scroll position gets within onEndReachedThreshold of the rendered content
+                            this.setState({ isBottomLoader: true }, () => this.onEndReached())
+                        }
+                    }}
+                    onEndReachedThreshold={0.5} //how far is it from bottom
+                    extraData={newsDataList} //whenever we need re rendering of the flatlist
+                    key={(isComfortableView ? 'comfort' : 'compact')} //for changing num columns dynamically
+                    keyExtractor={(item, index) => String(index)}
                 />
             </View>
         )
     }
 
-    renderSpinner = () => {
+    renderSpinner = () => { //render the main full screen spinner
         return (
             <>
                 <Spinner />
@@ -105,15 +122,18 @@ class NewsList extends Component {
     }
 
     onSwitchPress = (value) => {
+        //function called on switch press
         const { scrollPosition, isComfortableView } = this.state;
         this.setState({ isComfortableView: value }, () =>
             setTimeout(() => {
+                //There is no jerk, it scrolls smoothly
                 let newScrollPosition = !isComfortableView ? scrollPosition * 2.5 : scrollPosition / 1.5
                 this.flatListRef.scrollToOffset({ offset: newScrollPosition, animated: true })
             }, 500))
     }
 
     render() {
+        //See how small is the initial render. Makes the code very readable
         const { isLoading } = this.state;
         return (
             <SafeAreaView style={ApplicationStyles.screen.safeAreaViewContainer} forceInset={{ bottom: 'never' }}>
@@ -126,13 +146,15 @@ class NewsList extends Component {
     }
 }
 
-
+// Reading from store
 const mapStateToProps = state => ({
     auth: state.auth,
 });
 
+//Dispatching to props
 const mapDispatchToProps = dispatch => ({
     getNewsList: (data) => dispatch(getNewsListingRequest(data)),
 });
 
+//connect HOC
 export default connect(mapStateToProps, mapDispatchToProps)(NewsList);

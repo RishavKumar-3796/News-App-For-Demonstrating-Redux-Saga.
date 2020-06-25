@@ -4,6 +4,7 @@ import { Platform } from 'react-native';
 import moment from 'moment';
 
 const statusBarHeightFunc = () => {
+    //getting the status bar height and adjust bottom buttom if any
     const statusBarHeight = getStatusBarHeight(true);
     let bottomMarginForNotch = scale(5);
     if (Platform.OS === 'ios') {

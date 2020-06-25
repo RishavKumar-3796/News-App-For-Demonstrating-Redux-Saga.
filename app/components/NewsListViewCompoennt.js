@@ -11,7 +11,7 @@ export const NewsListViewCompoennt = (props) => {
 
     //Instead of re writing codes we can optimise them using functional renders
     const renderSubTexts = (value, totalLines, styles) => (
-        <Text style={styles} ellipsizeMode='tail' numberOfLines={!expanded ? totalLines : undefined}>{value.trim()}</Text>
+        <Text style={styles} ellipsizeMode='tail' numberOfLines={!expanded ? totalLines : undefined}>{value?.trim()}</Text>
     )
 
     const renderDate = () => {

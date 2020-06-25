@@ -8,6 +8,7 @@ import RootContainer from './RootContainer';
 
 const App = () => {
     return (
+        // Persisting the store for offline view of app with the data in store
         <Provider store={reduxStore.store}>
             <PersistGate loading={null} persistor={reduxStore.persistor}>
                 <RootContainer />

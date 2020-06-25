@@ -5,12 +5,14 @@ import styles from './styles/HeaderStyles';
 import SwitchToggle from '@dooboo-ui/native-switch-toggle';
 
 export default CustomHeader = (props) => {
+    //using of hooks for functional rendering
     const [switchOn, setSwitchOn] = useState(false)
     return (
         <View style={styles.headerStyle}>
             <Text style={styles.titleText}>{switchOn ? 'Compact' : 'Comfortable'}</Text>
-            {props?.showToggle &&
+            {props?.showToggle && // getting value from props
                 <View style={styles.absView}>
+                    {/* Switch toggle */}
                     <SwitchToggle
                         containerStyle={styles.toggleSwitchContainer}
                         backgroundColorOff={Colors.duckEggBlue}
